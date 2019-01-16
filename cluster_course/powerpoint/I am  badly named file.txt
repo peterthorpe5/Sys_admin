@@ -1,0 +1,4 @@
+badly named is of course a matter of opinion. 
+I also have windows line endings. 
+This will break scripts on Linux that try and parse me, unless they are coded to expect the 
+windows line ending. 
