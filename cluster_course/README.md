@@ -1,4 +1,4 @@
-# README.py - `using the bioinformatic cluster training course`
+# README - `using the bioinformatic cluster training course`
 This repository is for users to get the course content before they log on. This contains advise on how to log on, write scripts, submit jobs,
 local policy etc .. you will see
 
