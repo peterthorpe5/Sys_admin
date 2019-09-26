@@ -163,7 +163,7 @@ if __name__ == '__main__':
     err_formatter = logging.Formatter('%(levelname)s: %(message)s')
     err_handler.setFormatter(err_formatter)
     logger.addHandler(err_handler)
-    logfile == "prep_acc_to_des_db_%s.log" % (time.asctime())
+    logfile = "prep_acc_to_des_db_%s.log" % (time.asctime())
     try:
         logstream = open(logfile, 'w')
         err_handler_file = logging.StreamHandler(logstream)
