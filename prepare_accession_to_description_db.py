@@ -183,7 +183,7 @@ if __name__ == '__main__':
     logger.info("Command-line: %s", ' '.join(sys.argv))
     logger.info("Starting testing: %s", time.asctime())
     if not os.path.isfile(nr_fasta_file):
-        logger.warning("sorry cannot find you %s file" %
+        logger.warning("sorry cannot find you %s file", 
                        nr_fasta_file)
         logger.warning("please check this command again, " +
                        "with the full path if required")
