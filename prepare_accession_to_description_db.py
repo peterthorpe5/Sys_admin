@@ -9,6 +9,7 @@ import sys
 import logging
 import logging.handlers
 import time
+from datetime import date
 from optparse import OptionParser
 
 ########################################################################
@@ -163,7 +164,9 @@ if __name__ == '__main__':
     err_formatter = logging.Formatter('%(levelname)s: %(message)s')
     err_handler.setFormatter(err_formatter)
     logger.addHandler(err_handler)
-    logfile = "prep_acc_to_des_db_%s.log" % (time.asctime())
+    # date stamp for log 
+    today = today = date.today()
+    logfile = "prep_acc_to_des_db_%s.log" % (today.replace("-", "_"))
     try:
         logstream = open(logfile, 'w')
         err_handler_file = logging.StreamHandler(logstream)
