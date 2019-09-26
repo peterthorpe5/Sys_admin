@@ -165,7 +165,7 @@ if __name__ == '__main__':
     err_handler.setFormatter(err_formatter)
     logger.addHandler(err_handler)
     # date stamp for log 
-    today = today = date.today()
+    today = date.today()
     logfile = "prep_acc_to_des_db_%s.log" % (today.replace("-", "_"))
     try:
         logstream = open(logfile, 'w')
