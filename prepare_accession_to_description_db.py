@@ -158,15 +158,15 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
     nr_fasta_file = options.nr_fasta_file
     # Set up logging
+    # date stamp for log 
+    today = str(date.today())
+    logfile = "prep_acc_to_des_db_%s.log" % (today.replace("-", "_"))
     logger = logging.getLogger('prepare_acc_to_des_db.py: %s' % time.asctime())
     logger.setLevel(logging.DEBUG)
     err_handler = logging.StreamHandler(sys.stderr)
     err_formatter = logging.Formatter('%(levelname)s: %(message)s')
     err_handler.setFormatter(err_formatter)
     logger.addHandler(err_handler)
-    # date stamp for log 
-    today = date.today()
-    logfile = "prep_acc_to_des_db_%s.log" % (today.replace("-", "_"))
     try:
         logstream = open(logfile, 'w')
         err_handler_file = logging.StreamHandler(logstream)
