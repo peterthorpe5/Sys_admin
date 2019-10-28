@@ -1,14 +1,23 @@
 #!/bin/bash
 #$ -cwd
 set -euo pipefail
-# script to convert donwload NR
+# Title:
+# script to convert download NR, swiss prot, 
+# human stuff and make blastdb with it.
 
 cd /shelf/public/blastntnr/blastDatabases
 
+# Define a timestamp function
+timestamp() {
+  date +"%Y-%m-%d_%H"
+}
+
 # remove old files. 
-rm -rf prot.accession2taxid.gz.md5 prot.accession2taxid.gz categories.dmp  delnodes.dmp  gencode.dmp  \
-    names.dmp citations.dmp   division.dmp  merged.dmp   nodes.dmp  \
-    taxcat.zip taxdump.tar.gz nr.faa taxdb.btd  taxdb.bti  taxdb.tar.gz
+rm_cmd="rm -rf prot.accession2taxid.gz.md5 prot.accession2taxid.gz categories.dmp 
+        delnodes.dmp  gencode.dmp
+        names.dmp citations.dmp   division.dmp  merged.dmp   nodes.dmp  \
+        taxcat.zip taxdump.tar.gz nr.faa taxdb.btd  taxdb.bti  taxdb.tar.gz"
+echo ${rm_cmd} > Update_blast_db_(timestamp).log
 
 
 # get the accession to txid db -N (dont if time stamp is the same. 
