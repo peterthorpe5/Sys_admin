@@ -6,7 +6,7 @@
 #$ -cwd ## Execute the job from the current working directory
 
 
-cd $HOME/ngs/unknown_data/
+cd $HOME/ngs/directory_trimmed
 
 ######################################################################
 #  use prokka to predict genes
@@ -18,6 +18,8 @@ cd $HOME/ngs/unknown_data/
 
 
 # https://github.com/tseemann/prokka
-prokka --cpus 12 ./contigs.fa
+
+
+prokka --cpus 8 ./contigs.fa
 
 

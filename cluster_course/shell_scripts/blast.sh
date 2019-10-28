@@ -4,10 +4,10 @@
 #$ -S /bin/bash ## shell where it will run this job
 ####$ -j y ## join error output to normal output
 #$ -cwd ## Execute the job from the current working directory
-#$ -pe multi 2
+#$ -pe multi 4
 
 
-cd $HOME/ngs/unknown_data/
+cd $HOME/ngs/directory_trimmed
 
 ######################################################################
 # lets use BLAST to try and see what the mistery data set was. 
@@ -26,7 +26,7 @@ head -n 10 contigs.fa >  first_10_lines.txt
 
 # long lines split up with \ character. Interpreted as one line
 blastn -query first_10_lines.txt -db nt -outfmt 1 \
- -evalue 1e-40 -out n.first_10_lines.txt_versus_nt_outfmt1.out -num_threads 2
+ -evalue 1e-40 -out n.first_10_lines.txt_versus_nt_outfmt1.out -num_threads 4
 
 
 

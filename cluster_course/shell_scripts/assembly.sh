@@ -25,23 +25,20 @@ module load velvet/gitv0_9adf09f
 #velveth directory_subsampled 53 -shortPaired -fastq  ./reads/subsampled_R1.fastq.gz ./reads/subsampled_R2.fastq.gz ./reads/subsampled_R2.fastq.gz
 #velvetg directory_subsampled
 
-
-# the unknown data
-velveth unknown_data 53 -shortPaired -fastq  ./reads/unknown_r1.fq.gz ./reads/unknown_r2.fq.gz
-velvetg unknown_data
-
+# raw data 
 
 #########################################################################################
 # qc trimmedd 
-velveth directory_trim 53 -shortPaired -fastq ./subsampled_R1_paired.fastq.gz ./subsampled_R2_paired.fastq.gz
-velvetg directory_subsampled
-
-
-##########################################################################################
-# this is the raw data. possibly better to use this for trianing to get a better assembly. 
-
-velveth directory_raw kmer_length(CHANGE_ME) -shortPaired -fastq ./reads/DRR016013_1.fastq.gz ./reads/DRR016013_2.fastq.gz
+velveth directory_raw 53 -shortPaired -fastq ./reads/subsampled_R1.fastq.gz ./reads/subsampled_R2.fastq.gz
 velvetg directory_raw
+
+#########################################################################################
+# qc trimmedd 
+velveth directory_trimmed 53 -shortPaired -fastq ./subsampled_R1_paired.fastq.gz ./subsampled_R2_paired.fastq.gz
+velvetg directory_trimmed
+
+
+
 
 
 

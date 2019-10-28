@@ -20,6 +20,8 @@ java -jar /shelf/training/Trimmomatic-0.38/trimmomatic-0.38.jar PE -summary trim
 
 module load velvet/gitv0_9adf09f
 
+# https://www.ebi.ac.uk/ena/data/view/ERR861370
+
 # velvet assembly - subasmpled
 velveth directory_subsampled 77 -shortPaired -fastq  subsampled_R1.fastq.gz subsampled_R2.fastq.gz
 velvetg directory_subsampled
@@ -35,6 +37,11 @@ velvetg directory_raw
 # velvet assembly - trimmed
 velveth directory_subsampled_trimed127 127 -shortPaired -fastq  subsampled_R1_paired.fastq.gz subsampled_R2_paired.fastq.gz
 velvetg directory_subsampled_trimed127
+
+# sudo get all stats:
+perl /storage/home/users/pjt6/ngs/scripts/scaffold_stats.pl -f /storage/home/users/*/ngs/directory_raw/contigs.fasta > all_raw.txt
+perl /storage/home/users/pjt6/ngs/scripts/scaffold_stats.pl -f /storage/home/users/*/ngs/directory_trimmed/contigs.fasta > all_trimmed.txt
+
 
 
 blastn -task megablast -query first_20_lines.txt -db nt -outfmt '6 qseqid staxids bitscore std scomnames sscinames sblastnames sskingdoms stitle' -evalue 1e-20 -out n.first_20_lines.txt_versus_nt.out -num_threads 16
