@@ -1,0 +1,10 @@
+rule assemble:
+  output: "{sample}_paired_k21_contigs.fa"
+  input:
+    read1 = "{sample}_R1.fastq.gz",
+    read2 = "{sample}_R2.fastq.gz"
+  shell:
+    r"""velveth paired_k21 21 -shortPaired -fastq -separate {input.read1} {input.read2}
+        velvetg paired_k21
+        mv paired_k21/contigs.fa {output}
+    """
