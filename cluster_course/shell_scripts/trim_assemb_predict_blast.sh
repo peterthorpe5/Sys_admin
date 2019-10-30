@@ -33,9 +33,11 @@ eval ${fqc_cmd}
 # trim the raw reads
 trim_cmd="java -jar ${trim_path}/trimmomatic-0.38.jar PE 
     -summary trim_summary.txt 
-    -threads ${threads} -phred33 DRR*_R1.fastq.gz DRR*_R2.fastq.gz DRR_R1_paired.fastq.gz 
-    DRR__R1_unpaired.fastq.gz DRR__R2_paired.fastq.gz DRR_R2_unpaired.fastq.gz 
-    ILLUMINACLIP:/shelf/training/Trimmomatic-0.38/adapters/TruSeq3-PE.fa:2:30:10 
+    -threads ${threads} -phred33 
+    DRR021340_1.fastq.gz DRR021340_2.fastq.gz 
+    DRR_R1_paired.fastq.gz DRR_R1_unpaired.fastq.gz 
+    DRR_R2_paired.fastq.gz DRR_R2_unpaired.fastq.gz 
+    ILLUMINACLIP:${trim_path}/adapters/TruSeq3-PE.fa:2:30:10 
     LEADING:3 TRAILING:3 SLIDINGWINDOW:4:30 MINLEN:147"
 echo ${trim_cmd}
 eval ${trim_cmd}
@@ -99,7 +101,8 @@ eval ${annotate}
 
 # do assemblies over a whole range of kmers, odd numbers only:
 # you should only assemble with odd kmer due to palindromes. 
-for kmer in {55..127}
+# for kmer in {55..127} # this will take too long
+for kmer in {97..127}
 do
     rem=$(($kmer % 2))
     if [ "$rem" -ne "0" ]; then
@@ -114,3 +117,10 @@ do
     fi
 done
 
+
+# assembly stats
+stats="perl $HOME/ngs/scripts/scaffold_stats.pl 
+     -f ./unknown*/contigs.fasta 
+     > all_contig_len.stats.txt"
+echo ${stats}
+eval ${stats}
