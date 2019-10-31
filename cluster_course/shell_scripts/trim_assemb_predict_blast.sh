@@ -106,14 +106,14 @@ eval ${annotate}
 # do assemblies over a whole range of kmers, odd numbers only:
 # you should only assemble with odd kmer due to palindromes. 
 # for kmer in {55..127} # this will take too long
-for kmer in {97..127}
+for kmer in {55..127}
 do
     rem=$(($kmer % 2))
     if [ "$rem" -ne "0" ]; then
         echo $kmer
-        velveth_trim_cmd="velveth unknown_trimmed ${kmer} -shortPaired 
+        velveth_trim_cmd="velveth unknown_trimmed_${kmer} ${kmer} -shortPaired 
         -fastq DRR_R1_paired.fastq.gz DRR_R2_paired.fastq.gz"
-        velveg_assembl="velvetg unknown_trimmed"
+        velveg_assembl="velvetg unknown_trimmed_${kmer}"
         echo ${velveth_trim_cmd}
         eval ${velveth_trim_cmd}
         echo ${velveg_assembl}
