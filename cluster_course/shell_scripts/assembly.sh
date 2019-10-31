@@ -11,6 +11,9 @@ cd $HOME/ngs
 # load the velvet module
 module load velvet/gitv0_9adf09f
 
+# load the velvet module
+module load velvet/gitv0_9adf09f
+
 
 # velvet : https://github.com/dzerbino/velvet 
 

@@ -19,6 +19,10 @@ trim_path=/shelf/training/Trimmomatic-0.38/
 echo "loading required modules"
 module load FASTQC
 
+
+# load the velvet module
+module load velvet/gitv0_9adf09f
+
 # download the reads:
 echo "downloading the reads"
 wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR021/DRR021340/DRR021340_1.fastq.gz
@@ -70,7 +74,7 @@ eval ${velveg_assembl}
 
 # assembly stats
 stats="perl $HOME/ngs/scripts/scaffold_stats.pl 
-     -f ./unknown*/contigs.fasta 
+     -f ./unknown*/contigs.fa 
      > contig_${kmer}_len.stats.txt"
 echo ${stats}
 eval ${stats}
@@ -83,7 +87,7 @@ export BLASTDB=/shelf/public/blastntnr/blastDatabases
 export PATH=/shelf/apps/ncbi-blast-2.7.1+/bin/:$PATH
 
 # just grab some of the contigs file. Otherwise, it will take ages. 
-head -n 10 ./unknown_trimmed/contigs.fa >  first_10_lines.txt
+head -n 10 ./unknown_raw_${kmer}/contigs.fa >  first_10_lines.txt
 
 # long lines split up with \ character. Interpreted as one line
 blast_cmd="blastn -query first_10_lines.txt -db nt 
@@ -120,7 +124,7 @@ done
 
 # assembly stats
 stats="perl $HOME/ngs/scripts/scaffold_stats.pl 
-     -f ./unknown*/contigs.fasta 
+     -f ./unknown*/contigs.fa 
      > all_contig_len.stats.txt"
 echo ${stats}
 eval ${stats}
