@@ -28,5 +28,14 @@ head -n 10 contigs.fa >  first_10_lines.txt
 blastn -query first_10_lines.txt -db nt -outfmt 1 \
  -evalue 1e-40 -out n.first_10_lines.txt_versus_nt_outfmt1.out -num_threads 4
 
+# tabular output - most useful to me. 
+blastn -task megablast -query first_10_lines.txt -db nt -outfmt \
+'6 qseqid staxids bitscore std scomnames sscinames sblastnames sskingdoms stitle' \
+-evalue 1e-20 -out n.first_10_lines.txt_versus_ntOutfmt6.out -num_threads 4
+
+
+
+
+
 
 
