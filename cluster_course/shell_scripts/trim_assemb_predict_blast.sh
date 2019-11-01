@@ -18,19 +18,19 @@ trim_path=/shelf/training/Trimmomatic-0.38/
 
 echo "loading required modules"
 module load FASTQC
-
-
 # load the velvet module
 module load velvet/gitv0_9adf09f
 
 # download the reads:
 echo "downloading the reads"
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR021/DRR021340/DRR021340_1.fastq.gz
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR021/DRR021340/DRR021340_2.fastq.gz
+#wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR021/DRR021340/DRR021340_1.fastq.gz
+#wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR021/DRR021340/DRR021340_2.fastq.gz
 
+# it would be best to symbolic link these reads rather than everyone have them.
+# ln -s file1 link1
 
 # QC the raw
-fqc_cmd="fastqc DRR*.fastq.gz"
+fqc_cmd="fastqc ./reads/DRR*.fastq.gz"
 echo ${fqc_cmd}
 eval ${fqc_cmd}
 
@@ -38,7 +38,7 @@ eval ${fqc_cmd}
 trim_cmd="java -jar ${trim_path}/trimmomatic-0.38.jar PE 
     -summary trim_summary.txt 
     -threads ${threads} -phred33 
-    DRR021340_1.fastq.gz DRR021340_2.fastq.gz 
+    ./reads/DRR021340_1.fastq.gz ./reads/DRR021340_2.fastq.gz 
     DRR_R1_paired.fastq.gz DRR_R1_unpaired.fastq.gz 
     DRR_R2_paired.fastq.gz DRR_R2_unpaired.fastq.gz 
     ILLUMINACLIP:${trim_path}/adapters/TruSeq3-PE.fa:2:30:10 
@@ -90,10 +90,11 @@ export PATH=/shelf/apps/ncbi-blast-2.7.1+/bin/:$PATH
 head -n 10 ./unknown_raw_${kmer}/contigs.fa >  first_10_lines.txt
 
 # long lines split up with \ character. Interpreted as one line
-blast_cmd="blastn -query first_10_lines.txt -db nt 
-        -outfmt 1 \
-        -evalue 1e-40 -out n.first_10_lines.txt_versus_nt_outfmt1.out 
-        -num_threads ${threads}"
+# tabular output - most useful to me. 
+blast_cmd="blastn -task megablast -query first_10_lines.txt -db nt -outfmt 
+    '6 qseqid staxids bitscore std scomnames sscinames sblastnames sskingdoms stitle' 
+    -evalue 1e-20 -out n.first_10_lines.txt_versus_ntOutfmt6.out 
+    -num_threads ${threads}"
 echo ${blast_cmd}
 eval ${blast_cmd}
  
@@ -105,8 +106,8 @@ eval ${annotate}
 
 # do assemblies over a whole range of kmers, odd numbers only:
 # you should only assemble with odd kmer due to palindromes. 
-# for kmer in {55..127} # this will take too long
-for kmer in {55..127}
+# for kmer in {55..127} # this will take too long 19 hours!
+for kmer in {55..99}
 do
     rem=$(($kmer % 2))
     if [ "$rem" -ne "0" ]; then
