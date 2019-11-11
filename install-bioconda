@@ -34,6 +34,7 @@ source ${home_directory_path}/$USER/.bashrc
 conda config --add channels R
 conda config --add channels defaults
 conda config --add channels conda-forge
+conda config --add channels etetoolkit
 conda config --add channels bioconda
 
 echo "INFO: "
