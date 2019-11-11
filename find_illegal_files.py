@@ -10,7 +10,7 @@
 import os
 import platform
 import datetime
-import os, time, datetime
+import time
 
 illegal_files=""".bam .sam .fq .fastq""".split()
 
@@ -33,12 +33,16 @@ def creation_date(path_to_file):
             dc =("Date created: " + time.ctime(created))
             return dc
 
-def sizeof_fmt(num, suffix='B'):
+def sizeof_fmt(num, suffix='B', min_file_size=100):
     """func to return human readble file sizes"""
+    original_num = num
+    #if num < min_file_size:
+        #return "small file"
     for unit in ['','K','M','G','T','P','E','Z']:
         if abs(num) < 1024.0:
             return "%3.1f%s%s" % (num, unit, suffix)
         num /= 1024.0
+    print(original_num, "%.1f%s%s" % (num, 'Yi', suffix))
     return "%.1f%s%s" % (num, 'Yi', suffix)
 
 
@@ -62,17 +66,26 @@ if __name__ == '__main__':
         filetype_out = open(filetype_out, "w")
         outfile_dict[filetype] = filetype_out
     for dirpath, subdirs, files in os.walk(directory):
+        if "software_backups" in dirpath:
+            continue
         for x in files:
             #print result
             for filetype in illegal_files:
                 if x.endswith(filetype):
-                    try:
-                        file_date = modification_date(os.path.join
-                                                     (dirpath, x))
-                        file_size = get_size(os.path.join(dirpath, x))
-                        outfmt = "\t".join([(os.path.join(dirpath, x)),
-                                            str(file_date), 
-                                            file_size])         
-                        outfile_dict[filetype].write(outfmt  + "\n")
-                    except:
-                        pass # probaly been altered during running
+                    #if not os.path.isfile(os.path.join(dirpath, x)):
+                        #continue # may have been modified while running
+                    file_date = modification_date(os.path.join
+                                                 (dirpath, x))
+                    file_size = get_size(os.path.join(dirpath, x))
+                    #if file_size == "small file":
+                        #continue
+                    outfmt = "\t".join([(os.path.join(dirpath, x)),
+                                        str(file_date), 
+                                        file_size])
+                                        
+                    #if "MB" in file_size or "KB" in file_size:
+                        #continue
+                    outfile_dict[filetype].write(outfmt  + "\n")
+    for filetype in illegal_files:
+        # its polite to flush the toilet after yourself. 
+        outfile_dict[filetype].close()
