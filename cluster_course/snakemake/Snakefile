@@ -1,3 +1,5 @@
+ # this is a snakemake method to run the course in a snakemake like manner  
+     
 rule assemble:
   output: "{sample}_paired_k21_contigs.fa"
   input:
@@ -7,4 +9,37 @@ rule assemble:
     r"""velveth paired_k21 21 -shortPaired -fastq -separate {input.read1} {input.read2}
         velvetg paired_k21
         mv paired_k21/contigs.fa {output}
+    """
+
+rule trim:
+  """https://snakemake-wrappers.readthedocs.io/en/stable/wrappers/trimmomatic/pe.html look at this for a full method"""
+  output:
+    r1 = "{sample}_paired_R1.fastq.gz",
+    r2 = "{sample}_paired_R2.fastq.gz"
+  input:
+    read1 = "{sample}_R1.fastq.gz",
+    read2 = "{sample}_R2.fastq.gz"
+  shell:
+    r"""java -jar /shelf/training/Trimmomatic-0.38/trimmomatic-0.38.jar PE -summary trim_summary.txt \
+    -threads 1 -phred33 {input.read1} {input.read2} {output.r1} \
+    subsampled_R1_unpaired.fastq.gz {output.r2} subsampled_R2_unpaired.fastq.gz \
+    ILLUMINACLIP:/shelf/training/Trimmomatic-0.38/adapters/TruSeq3-PE.fa:2:30:10 \
+    LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:45 
+    """
+
+rule stats:
+  output: "{contigs}_stats.txt"
+  input:  "{contigs}"
+  shell:
+    r"perl /storage/home/users/pjt6/scaffold_stats.pl -f {input} > {output}"
+    
+rule BLASTN:
+  output: "{contigs}_BLASTN.tab"
+  input:  "{contigs}"
+  shell:
+    r"""/shelf/apps/ncbi-blast-2.7.1+/bin/blastn -task megablast \
+    -query {input} -db /shelf/public/blastntnr/blastDatabases/nt -outfmt \
+    '6 qseqid staxids bitscore std scomnames sscinames sblastnames sskingdoms stitle' \
+    -evalue 1e-20 -out {output} \
+    -num_threads 1
     """
